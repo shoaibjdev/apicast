@@ -386,7 +386,7 @@ function _M.access(service)
   elseif backend_version == 'oauth' then
     if credentials.location == 'headers' then
       local token_type, access_token = unpack(split(parameters.authorization or "", " "))
-      if access_token and string.lower(token_type) == "bearer" then
+      if access_token and token_type == "Bearer" then
         params.access_token = access_token
       end
     else

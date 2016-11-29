@@ -465,3 +465,36 @@ GET /?access_token=foobar
 --- error_code: 401
 --- response_body chomp
 credentials missing!
+
+=== TEST 15: calling with access_token in header when the type is not 'Bearer' (case-sensitive) fails with 'auth missing'
+--- http_config
+  lua_package_path "$TEST_NGINX_LUA_PATH";
+
+  init_by_lua_block {
+    require('configuration').save({
+      services = {
+        {
+          backend_version = 'oauth',
+          proxy = {
+            credentials_location = 'headers',
+            error_auth_missing = 'credentials missing!',
+            error_status_auth_missing = 401,
+            proxy_rules = {
+              { pattern = '/', http_method = 'GET', metric_system_name = 'hits' }
+            }
+          }
+        }
+      }
+    })
+  }
+  lua_shared_dict api_keys 1m;
+--- config
+  include $TEST_NGINX_APICAST_CONFIG;
+  include $TEST_NGINX_BACKEND_CONFIG;
+--- request
+GET /
+--- more_headers
+Authorization: bearer foobar
+--- error_code: 401
+--- response_body chomp
+credentials missing!
