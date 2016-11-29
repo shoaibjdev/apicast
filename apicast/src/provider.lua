@@ -384,7 +384,14 @@ function _M.access(service)
     ngx.var.cached_key = concat({service.id, params.app_id, params.app_key}, ':')
 
   elseif backend_version == 'oauth' then
-    params.access_token = parameters.access_token
+    if credentials.location == 'headers' then
+      local token_type, access_token = unpack(split(parameters.authorization or "", " "))
+      if access_token and string.lower(token_type) == "bearer" then
+        params.access_token = access_token
+      end
+    else
+      params.access_token = parameters.access_token
+    end
     ngx.var.cached_key = concat({service.id, params.access_token}, ':')
   else
     error('unknown backend version: ' .. tostring(backend_version))
