@@ -44,15 +44,15 @@ objects:
           - name: APICAST_SERVICES
             value: ${APICAST_SERVICES}
           - name: APICAST_MISSING_CONFIGURATION
-            value: ${MISSING_CONFIGURATION}
+            value: ${APICAST_MISSING_CONFIGURATION}
           - name: APICAST_LOG_LEVEL
             value: ${APICAST_LOG_LEVEL}
           - name: APICAST_PATH_ROUTING_ENABLED
-            value: ${PATH_ROUTING}
+            value: ${APICAST_PATH_ROUTING_ENABLED}
           - name: APICAST_RESPONSE_CODES
-            value: ${RESPONSE_CODES}
+            value: ${APICAST_RESPONSE_CODES}
           - name: APICAST_REQUEST_LOGS
-            value: ${REQUEST_LOGS}
+            value: ${APICAST_REQUEST_LOGS}
           - name: APICAST_RELOAD_CONFIG
             value: ${APICAST_RELOAD_CONFIG}
           image: ${THREESCALE_GATEWAY_IMAGE}
@@ -127,21 +127,21 @@ parameters:
 - description: "What to do on missing or invalid configuration. Allowed values are: log, exit."
   value: exit
   required: false
-  name: MISSING_CONFIGURATION
+  name: APICAST_MISSING_CONFIGURATION
 - description: "Log level. One of the following: debug, info, notice, warn, error, crit, alert, or emerg."
   name: APICAST_LOG_LEVEL
   required: false
 - description: "Enable path routing. Experimental feature."
-  name: PATH_ROUTING
+  name: APICAST_PATH_ROUTING_ENABLED
   required: false
   value: "false"
 - description: "Enable traffic logging to 3scale. Includes whole request and response."
   value: "false"
-  name: REQUEST_LOGS
+  name: APICAST_REQUEST_LOGS
   required: false
 - description: "Enable logging response codes to 3scale."
   value: "false"
-  name: RESPONSE_CODES
+  name: APICAST_RESPONSE_CODES
   required: false
 - description: "Reload config on every request"
   value: "false"
