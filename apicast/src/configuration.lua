@@ -27,6 +27,8 @@ local split = util.string_split
 local inspect = require 'inspect'
 local cjson = require 'cjson'
 
+local hawkular = require 'resty.hawkular'
+
 local mt = { __index = _M }
 
 local function map(func, tbl)
@@ -323,11 +325,11 @@ function _M.file(path)
   return _M.read(file)
 end
 
-function _M.boot()
+_M.boot = hawkular.wrap('configuration', function()
   local endpoint = getenv('THREESCALE_PORTAL_ENDPOINT')
 
   return _M.load() or _M.file() or _M.wait(endpoint, 3) or _M.download(endpoint) or _M.curl(endpoint) or error('missing configuration')
-end
+end)
 
 function _M.save(config)
   _M.config = config -- TODO: use shmem
@@ -457,6 +459,7 @@ function _M.download(endpoint)
       return nil, err
     end
   else
+    ngx.log(ngx.ERR, err or res.reason)
     return nil, err or res.reason
   end
 end
