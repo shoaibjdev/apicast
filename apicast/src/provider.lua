@@ -11,6 +11,7 @@ local inspect = require 'inspect'
 local oauth = require 'oauth'
 local util = require 'util'
 local resty_url = require 'resty.url'
+local re = require 'ngx.re'
 
 local type = type
 local pairs = pairs
@@ -24,8 +25,6 @@ local format = string.format
 local gsub = string.gsub
 local unpack = unpack
 local tonumber = tonumber
-
-local split = util.string_split
 
 local resty_resolver = require 'resty.resolver'
 local dns_resolver = require 'resty.resolver.dns'
@@ -383,7 +382,8 @@ function _M.access(service)
 
   local request = ngx.var.request
   local credentials = service.credentials
-  local parameters = get_auth_params(credentials.location, split(request, " ")[1] )
+
+  local parameters = get_auth_params(credentials.location, re.split(request, " ", 'oj')[1] )
 
   ngx.var.secret_token = service.secret_token
 

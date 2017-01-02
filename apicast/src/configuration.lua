@@ -22,11 +22,11 @@ local pcall = pcall
 local setmetatable = setmetatable
 
 local util = require 'util'
-local split = util.string_split
 
 local inspect = require 'inspect'
 local cjson = require 'cjson'
 local resty_url = require 'resty.url'
+local re = require 'ngx.re'
 
 local mt = { __index = _M }
 
@@ -167,8 +167,8 @@ function _M.parse_service(service)
         return credentials
       end,
       extract_usage = function (config, request, _)
-        local method, url = unpack(split(request," "))
-        local path, _ = unpack(split(url, "?"))
+        local method, url = unpack(re.split(request, " ", 'oj'))
+        local path, _ = unpack(re.split(url, "\\?", 'oj'))
         local usage_t =  {}
         local matched_rules = {}
 
@@ -191,7 +191,7 @@ function _M.parse_service(service)
       --     access_token when backen version == oauth
       --     empty when backend version is unknown
       extract_credentials = function(_, request)
-        local auth_params = get_auth_params(split(request, " ")[1])
+        local auth_params = get_auth_params(re.split(request, " ", 'oj')[1])
 
         local result = {}
         if backend_version == '1' then
@@ -287,7 +287,7 @@ function _M.services_limit()
   local subset = os.getenv('APICAST_SERVICES')
   if not subset or subset == '' then return services end
 
-  local ids = split(subset, ',')
+  local ids = re.split(subset, ',', 'oj')
 
   return to_hash(ids)
 end
