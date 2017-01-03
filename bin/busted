@@ -1,4 +1,4 @@
-#!/usr/bin/env resty
+#!/usr/bin/env resty --http-include spec/fixtures/echo.conf
 
 if ngx ~= nil then
   ngx.exit = function()end
