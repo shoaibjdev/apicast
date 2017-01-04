@@ -402,7 +402,8 @@ Authorization: Bearer foobar
 --- response_body
 yay, upstream
 
-=== TEST 13: calling with access_token in header when credentials location is 'query' fails with 'auth missing'
+=== TEST 13: calling with access_token in header when credentials location is 'query' works
+as per RFC https://tools.ietf.org/html/rfc6750#section-2.1 that says: Resource servers MUST support this method.
 --- http_config
   lua_package_path "$TEST_NGINX_LUA_PATH";
 
@@ -431,9 +432,7 @@ yay, upstream
 GET /
 --- more_headers
 Authorization: Bearer foobar
---- error_code: 401
---- response_body chomp
-credentials missing!
+--- error_code: 403
 
 === TEST 14: calling with access_token in header when credentials location is 'headers' fails with 'auth missing'
 --- http_config
