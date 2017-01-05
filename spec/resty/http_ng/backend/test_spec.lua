@@ -10,8 +10,8 @@ describe('test backend',function()
     it('allows setting expectations', function()
       backend.expect{method = 'GET'}.respond_with{status = 301 }
 
-      local request = request.new{method = 'GET', url = 'http://example.com' }
-      local response = backend.send(request)
+      local req = request.new{method = 'GET', url = 'http://example.com' }
+      local response = backend.send(req)
 
       assert.truthy(response)
     end)
@@ -23,14 +23,14 @@ describe('test backend',function()
     end)
 
     it('expects a request', function()
-      local request = request.new{method = 'GET', url = 'http://example.com' }
-      assert.has.error(function() backend.send(request) end, 'no expectation')
+      local req = request.new{method = 'GET', url = 'http://example.com' }
+      assert.has.error(function() backend.send(req) end, 'no expectation')
     end)
 
     it('matches expectation', function()
       backend.expect{method = 'POST'}
-      local request = request.new{method = 'GET', url = 'http://example.com' }
-      assert.has.error(function() backend.send(request) end, 'expectation does not match')
+      local req = request.new{method = 'GET', url = 'http://example.com' }
+      assert.has.error(function() backend.send(req) end, 'expectation does not match')
     end)
   end)
 end)

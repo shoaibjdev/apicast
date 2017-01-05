@@ -15,8 +15,9 @@ local setmetatable = setmetatable
 -- @usage http.get(uri, { ssl = { verify = false }})
 -- @usage http.get(uri, { headers = { my_header = 'value' }})
 
-local headers = require 'resty.http_ng.headers'
-local request = { headers = headers }
+local request = { }
+
+request.headers = require 'resty.http_ng.headers'
 
 function request.extract_headers(req)
   local options = req.options or {}

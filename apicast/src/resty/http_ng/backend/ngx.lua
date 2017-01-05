@@ -26,9 +26,9 @@ backend.send = function(request)
     }
   })
 
-  if res.truncated then
+  -- if res.truncated then
     -- Do what? what error message it should say?
-  end
+  -- end
 
   return response.new(res.status, res.header, res.body)
 end

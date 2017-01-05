@@ -36,7 +36,8 @@ describe('http_ng', function()
     local body = { value = 'some' }
 
     it('serializes table as form-urlencoded', function()
-      local response = http.post('http://example.com', body)
+      http.post('http://example.com', body)
+
       local last_request = assert(backend.last_request)
       assert.equal('application/x-www-form-urlencoded', last_request.headers.content_type)
       assert.equal('value=some', last_request.body)
@@ -45,13 +46,13 @@ describe('http_ng', function()
 
   describe('array syntax', function()
     it('works for get', function()
-      local response = http.get{'http://example.com', headers = { custom = 'value'} }
+      http.get{'http://example.com', headers = { custom = 'value'} }
       local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers.custom)
     end)
 
     it('works for post', function()
-      local response = http.post{'http://example.com', 'body', headers = { custom = 'value'} }
+      http.post{'http://example.com', 'body', headers = { custom = 'value'} }
       local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers.Custom)
       assert.equal('body', last_request.body)
@@ -62,19 +63,19 @@ describe('http_ng', function()
     local headers = { custom_header = 'value' }
 
     it('can override Host header', function()
-      local response = http.get('http://example.com', { headers = { host = 'overriden' }})
+      http.get('http://example.com', { headers = { host = 'overriden' }})
       local last_request = assert(backend.last_request)
       assert.equal('overriden', last_request.headers.host)
     end)
 
     it('passed headers for requests with body', function()
-      local response = http.post('http://example.com', '', { headers = headers })
+      http.post('http://example.com', '', { headers = headers })
       local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers['Custom-Header'])
     end)
 
     it('passed headers for requests without body', function()
-      local response = http.get('http://example.com', { headers = headers })
+      http.get('http://example.com', { headers = headers })
       local last_request = assert(backend.last_request)
       assert.equal('value', last_request.headers['Custom-Header'])
     end)
@@ -145,8 +146,8 @@ describe('http_ng', function()
   describe('works with api.twitter.com #network', function()
 
     it('connects #twitter', function()
-      local http = http_ng.new{}
-      local response = http.get('http://api.twitter.com/')
+      local client = http_ng.new{}
+      local response = client.get('http://api.twitter.com/')
       assert(response.ok, 'response is not ok')
     end)
   end)

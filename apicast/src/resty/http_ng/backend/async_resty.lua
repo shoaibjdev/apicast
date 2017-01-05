@@ -36,14 +36,16 @@ _M.async = function(req)
     local verify = req.options and req.options.ssl and req.options.ssl.verify
     if type(verify) == 'nil' then verify = true end
 
-    local session, err = httpc:ssl_handshake(false, host, verify)
+    local session
+    session, err = httpc:ssl_handshake(false, host, verify)
 
     if not session then
       return response.error(err, req)
     end
   end
 
-  local res, err = httpc:request(req)
+  local res
+  res, err = httpc:request(req)
 
   if res then
     return response.new(res.status, res.headers, function() return (res:read_body()) end)
