@@ -1,3 +1,11 @@
+local pairs = pairs
+local type = type
+local assert = assert
+local setmetatable = setmetatable
+local insert = table.insert
+local remove = table.remove
+local error = error
+
 local _M = {}
 
 local function contains(expected, actual)
@@ -39,17 +47,17 @@ _M.new = function()
 
   backend.expect = function(request)
     local expectation = _M.expectation.new(request)
-    table.insert(expectations, expectation)
+    insert(expectations, expectation)
     return expectation
   end
 
   backend.send = function(request)
-    local expectation = table.remove(expectations, 1)
+    local expectation = remove(expectations, 1)
 
     if not expectation then error('no expectation') end
     if not _M.expectation.match(expectation, request) then error('expectation does not match') end
 
-    table.insert(requests, request)
+    insert(requests, request)
 
     return expectation.response
   end

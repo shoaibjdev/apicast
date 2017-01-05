@@ -1,3 +1,10 @@
+local insert = table.insert
+local concat = table.concat
+local assert = assert
+local pairs = pairs
+local rawset = rawset
+local rawget = rawget
+local setmetatable = setmetatable
 
 local headers = {}
 local headers_mt = {
@@ -18,9 +25,9 @@ end
 headers.normalize_key = function(key)
   local parts = {}
   key:gsub('[^_-]+', function(part)
-    table.insert(parts, capitalize(part))
+    insert(parts, capitalize(part))
   end)
-  return table.concat(parts, '-')
+  return concat(parts, '-')
 end
 
 headers.normalize = function(http_headers)

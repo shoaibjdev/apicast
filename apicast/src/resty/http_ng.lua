@@ -1,3 +1,10 @@
+local type = type
+local unpack = unpack
+local assert = assert
+local tostring = tostring
+local setmetatable = setmetatable
+local rawset = rawset
+
 ------------
 --- HTTP
 -- HTTP client

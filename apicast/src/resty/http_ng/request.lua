@@ -1,3 +1,7 @@
+local match = string.match
+local assert = assert
+local setmetatable = setmetatable
+
 ------------
 -- @module middleware
 
@@ -19,7 +23,7 @@ function request.extract_headers(req)
   local headers = request.headers.new(options.headers)
 
   headers.user_agent = headers.user_agent or 'APIcast (+https://www.apicast.io)'
-  headers.host = headers.host or string.match(req.url, "^.+://([^/]+)")
+  headers.host = headers.host or match(req.url, "^.+://([^/]+)")
   headers.connection = headers.connection or 'Keep-Alive'
 
   options.headers = nil

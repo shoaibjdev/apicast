@@ -1,3 +1,8 @@
+local assert = assert
+local rawget = rawget
+local rawset = rawset
+local type = type
+local setmetatable = setmetatable
 ------------
 -- @module middleware
 

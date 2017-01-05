@@ -1,4 +1,17 @@
+local setmetatable = setmetatable
+local rawset = rawset
+local pairs = pairs
+local unpack = unpack
+local assert = assert
+local print = print
+local type = type
+local rawlen = rawlen
+local next = next
+local wait = ngx.thread.wait
+local spawn = ngx.thread.spawn
+
 local _M = {}
+
 local response = require 'resty.http_ng.response'
 local http = require 'resty.http'
 
@@ -44,7 +57,7 @@ local function future(thread)
 
   local function load(table)
     if not ok and not res then
-      ok, res = ngx.thread.wait(thread)
+      ok, res = wait(thread)
 
       rawset(table, 'ok', ok)
 
@@ -78,7 +91,7 @@ local function future(thread)
 end
 
 _M.send = function(request)
-  local thread = ngx.thread.spawn(_M.async, request)
+  local thread = spawn(_M.async, request)
   return future(thread)
 end
 
